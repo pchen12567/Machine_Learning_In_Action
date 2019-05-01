@@ -54,4 +54,4 @@ def knn_classify(X, data, labels, k):
 data, labels = createDataSet()
 X = [2, 2]
 result = knn_classify(X, data, labels, 3)
-print('Prediction: ', result)
+# print('Prediction: ', result)

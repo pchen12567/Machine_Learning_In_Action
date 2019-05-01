@@ -41,7 +41,7 @@ def file2matrix(filename):
     return result_matrix, label_vector
 
 
-# Build function to normalization the input data
+# Normalization the input data
 def auto_norm(data):
     # Get minimum value
     min_val = data.min(0)
@@ -62,7 +62,6 @@ def auto_norm(data):
     return norm_data, range_value, min_val
 
 
-#
 def dating_classify(file):
     # Parse file to get data and label
     dating_data, dating_label = file2matrix(file)
@@ -90,9 +89,38 @@ def dating_classify(file):
     print('The total error rate is: {}%'.format((count / num_test) * 100))
 
 
+def classify_person():
+    result_map = {1: 'Not at all', 2: 'In small doses', 3: 'In large doses'}
+
+    game_time = float(input('Percentage of time spent playing video games? '))
+
+    fly_mile = float(input('Frequent flier miles earned per year? '))
+
+    ice_cream = float(input('Liters of ice cream consumed per year? '))
+
+    path = './data/datingTestSet.txt'
+
+    dating_data, dating_label = file2matrix(path)
+
+    norm_data, range_value, min_value = auto_norm(dating_data)
+
+    input_data = np.array([fly_mile, game_time, ice_cream])
+
+    result = KNN.knn_classify(X=(input_data - min_value) / range_value, data=norm_data, labels=dating_label, k=3)
+
+    print('You will probably like the person: {}'.format(result_map[result]))
+
+
+def main():
+    classify_person()
+
+
+if __name__ == '__main__':
+    main()
+
 # Test
-path = './data/datingTestSet.txt'
-dating_classify(path)
+# path = './data/datingTestSet.txt'
+# dating_classify(path)
 
 # path = './data/datingTestSet.txt'
 # dating_matrix, dating_label = file2matrix(path)
