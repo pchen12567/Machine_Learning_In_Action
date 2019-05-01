@@ -3,13 +3,13 @@ from collections import defaultdict
 
 
 def createDataSet():
-    group = np.array([[1.0, 1.1],
-                      [1.0, 1.0],
-                      [0, 0],
-                      [0, 0.1]])
+    data = np.array([[1.0, 1.1],
+                     [1.0, 1.0],
+                     [0, 0],
+                     [0, 0.1]])
     labels = ['A', 'A', 'B', 'B']
 
-    return group, labels
+    return data, labels
 
 
 def knn_classify(X, data, labels, k):
@@ -28,11 +28,11 @@ def knn_classify(X, data, labels, k):
 
     # Get distance between X and each data
     distance = sqDistances ** 0.5
-    print('Distance: ', distance)
+    # print('Distance: ', distance)
 
     # Get the sorted index by distance
     sorted_index = distance.argsort()
-    print('Sorted index by distance: ', sorted_index)
+    # print('Sorted index by distance: ', sorted_index)
 
     # Init dict to compute labels
     label_count = defaultdict(int)
@@ -45,13 +45,13 @@ def knn_classify(X, data, labels, k):
 
     # Sort the dict by label count
     label_count_rank = sorted(label_count.items(), key=lambda item: item[1], reverse=True)
-    print('Sorted label count: ', label_count_rank)
+    # print('Sorted label count: ', label_count_rank)
 
     return label_count_rank[0][0]
 
 
 # Test
-group, labels = createDataSet()
+data, labels = createDataSet()
 X = [2, 2]
-result = knn_classify(X, group, labels, 3)
+result = knn_classify(X, data, labels, 3)
 print('Prediction: ', result)
