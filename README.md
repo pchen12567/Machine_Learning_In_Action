@@ -8,3 +8,5 @@
     
 ## Chapter 03: DT
 - [DT Model](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch03_DT/trees.py)
+- Instance:
+    - [DT_LensesType](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch03_DT/DT_LensesType.py)
