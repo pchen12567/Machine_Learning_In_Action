@@ -7,6 +7,7 @@
 
 from math import log
 from collections import defaultdict
+import pickle
 
 
 # Build function to calculate entropy
@@ -167,6 +168,40 @@ def create_tree(data, factor_names):
     return my_tree
 
 
+# Build classify function
+def classify(input_tree, factor_names, testvec):
+    # Get first factor name
+    first_node = list(input_tree.keys())[0]
+
+    # Get first factor value = dict
+    second_dict = input_tree[first_node]
+
+    # Get position of first factor in factor_names
+    factor_index = factor_names.index(first_node)
+
+    # Scan keys in second_dict
+    for key in second_dict.keys():
+        if testvec[factor_index] == key:
+            # Continue scanning if key in second_dict is still dict
+            if type(second_dict[key]).__name__ == 'dict':
+                class_label = classify(second_dict[key], factor_names, testvec)
+            else:
+                class_label = second_dict[key]
+    return class_label
+
+
+# Save DT
+def storeTree(input_tree, filename):
+    with open(filename, 'wb') as f:
+        pickle.dump(input_tree, f)
+
+
+# Get DT
+def grabTree(filename):
+    with open(filename, 'rb') as f:
+        return pickle.load(f)
+
+
 def create_data():
     data = [[1, 1, 'yes'],
             [1, 1, 'yes'],
@@ -181,7 +216,8 @@ def create_data():
 
 def main():
     my_data, my_factor_names = create_data()
-    print('My Data: ', my_data)
+    # print('My Data: ', my_data)
+
     # my_entropy = calc_entropy(my_data)
     # print('My Entropy: ', my_entropy)
 
@@ -194,7 +230,18 @@ def main():
     # print('My best split factor position is: ', best_factor)
 
     my_tree = create_tree(my_data, my_factor_names)
-    print(my_tree)
+    # print('My tress: ', my_tree)
+
+    # my_tree = {'no surfacing': {0: 'no', 1: {'flippers': {0: 'no', 1: 'yes'}}}}
+    # print('My tress: ', my_tree)
+    # pred_1 = classify(my_tree, my_factor_names, [1, 0])
+    # pred_2 = classify(my_tree, my_factor_names, [1, 1])
+    # print('Test vector [1, 0] prediction: ', pred_1)
+    # print('Test vector [1, 1] prediction: ', pred_2)
+
+    storeTree(my_tree, 'classifierStorage.txt')
+    tree = grabTree('classifierStorage.txt')
+    # print('Grab Tree: ', tree)
 
 
 if __name__ == '__main__':
