@@ -8,6 +8,7 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.metrics import accuracy_score
 
 # Load data
@@ -25,6 +26,11 @@ df['label'] = df['label'].apply(lambda x: label_map[x])
 # Split features and label
 X = df.iloc[:, 0:3]
 y = df.iloc[:, -1]
+
+# Normalization features
+scaler = MinMaxScaler(feature_range=(0, 1))
+X_scaler = scaler.fit_transform(X.values)
+X = pd.DataFrame(X_scaler, columns=['fly_mile', 'game_time', 'ice_cream'])
 
 # Split train and test data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
