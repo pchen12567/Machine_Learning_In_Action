@@ -239,8 +239,8 @@ def main():
     # print('Test vector [1, 0] prediction: ', pred_1)
     # print('Test vector [1, 1] prediction: ', pred_2)
 
-    storeTree(my_tree, 'classifierStorage.pkl')
-    tree = grabTree('classifierStorage.pkl')
+    storeTree(my_tree, './data/classifierStorage.pkl')
+    tree = grabTree('./data/classifierStorage.pkl')
     # print('Grab Tree: ', tree)
 
 
