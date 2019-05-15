@@ -116,7 +116,8 @@ def spam_test():
             counter += 1
             print('Classification error', file_list[test_index])
 
-    print('The error rate is: {}'.format(counter/len(test_file_index)))
+    rate = round(counter/len(test_file_index), 4)
+    print('The error rate is: {}'.format(rate))
 
 
 def main():
@@ -124,8 +125,8 @@ def main():
     #     content = f.read().decode('utf-8', errors='ignore')
     #     token_list = text_parse(content)
     #     print(token_list)
-    for i in range(5):
-        spam_test()
+
+    spam_test()
 
 
 if __name__ == '__main__':
