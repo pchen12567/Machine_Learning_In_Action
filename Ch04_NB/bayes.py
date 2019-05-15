@@ -33,10 +33,10 @@ def create_vocab_list(documents):
         vocab_set = vocab_set | set(doc)
 
     # Sorted result
-    vocab_set = sorted(vocab_set)
+    vocab_list = sorted(vocab_set)
 
     # Return the unique vocabularies list
-    return vocab_set
+    return vocab_list
 
 
 # Function to get document vector set of target one according to unique vocabulary list
@@ -56,14 +56,14 @@ def words_2_vec_set(vocab_list, input_doc):
 
 
 # Function to get document vector bag of target one according to unique vocabulary list
-def words_2_vec_bag(vocal_list, input_doc):
+def words_2_vec_bag(vocab_list, input_doc):
     # Init document vector with zeros
-    result_vec = [0] * len(vocal_list)
+    result_vec = [0] * len(vocab_list)
 
     # Scan target document and increase vector value by 1 if it exists in unique vocabulary list
     for word in input_doc:
-        if word in vocal_list:
-            result_vec[vocal_list.index(word)] += 1
+        if word in vocab_list:
+            result_vec[vocab_list.index(word)] += 1
 
     # Return target vector
     return result_vec
