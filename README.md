@@ -12,3 +12,6 @@
 - Instance:
     - [DT_LensesType.py: Classify Lenses Type](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch03_DT/DT_LensesType.py)
     - [DT_SKlearn.py](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch03_DT/DT_SKlearn.py)
+    
+## Chapter 04: NB
+- [NB_Model: bayes.py](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch04_NB/bayes.py)
