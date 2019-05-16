@@ -77,9 +77,6 @@ def trainNB(train_matrix, category_label):
     # Get number of total words in vocabulary
     words_number = len(train_matrix[0])
 
-    # Calculate probability of abusive document
-    p_abusive = sum(category_label) / float(total_doc)
-
     # Init numerator vector
     p_0_numerator = np.ones(words_number)
     p_1_numerator = np.ones(words_number)
@@ -103,6 +100,9 @@ def trainNB(train_matrix, category_label):
             p_0_numerator += train_matrix[i]
             # Get total words of label = 0
             p_0_denominator += sum(train_matrix[i])
+
+    # Calculate probability of abusive document
+    p_abusive = p_1_denominator / float(p_1_denominator + p_0_denominator)
 
     # Calculate word vector probability of label = 0
     p_0_vec = np.log(p_0_numerator / p_0_denominator)
@@ -147,11 +147,11 @@ def main():
     # print('p_1_vec: ', p_1_vec)
 
     input_1 = ['love', 'my', 'dalmation']
-    test_1 = words_2_vec_set(my_vocab_list, input_1)
+    test_1 = np.array(words_2_vec_bag(my_vocab_list, input_1))
     print('{} vector is: {}'.format(input_1, test_1))
 
     input_2 = ['stupid', 'garbage']
-    test_2 = words_2_vec_set(my_vocab_list, input_2)
+    test_2 = np.array(words_2_vec_bag(my_vocab_list, input_2))
     print('{} vector is: {}'.format(input_2, test_2))
 
     print('{} classified as: {}'.format(input_1, classifyNB(test_1, p_0_vec, p_1_vec, p_abusive)))

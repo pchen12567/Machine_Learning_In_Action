@@ -5,6 +5,7 @@
 @File: spam_email.py 
 """
 
+import numpy as np
 import re
 import random
 from Ch04_NB import bayes
@@ -80,8 +81,9 @@ def spam_test():
         test_file_index.append(rand_index)
 
         # Delete index in training file index list
-        training_file_index.pop(rand_index)
+        del(training_file_index[rand_index])
 
+    # print(test_file_index)
     # print(len(training_file_index))
     # Init train vector matrix
     train_matrix = []
@@ -91,7 +93,7 @@ def spam_test():
     # Scan the remaining 40 files
     for train_index in training_file_index:
         # Get train file vector
-        train_file_vec = bayes.words_2_vec_set(vocab_list, file_list[train_index])
+        train_file_vec = np.array(bayes.words_2_vec_bag(vocab_list, file_list[train_index]))
         # Save to train vector matrix
         train_matrix.append(train_file_vec)
         # Get train file label
@@ -99,6 +101,9 @@ def spam_test():
 
     # Train data by naive bayes
     p_0_vec, p_1_vec, p_spam = bayes.trainNB(train_matrix, train_labels)
+    # print(p_0_vec)
+    # print(p_1_vec)
+    # print(p_spam)
 
     # Init error counter
     counter = 0
@@ -106,10 +111,13 @@ def spam_test():
     # Scan 10 test files
     for test_index in test_file_index:
         # Get test file vector
-        test_file_vec = bayes.words_2_vec_set(vocab_list, file_list[test_index])
+        test_file_vec = np.array(bayes.words_2_vec_bag(vocab_list, file_list[test_index]))
 
         # Get test file prediction label
         pred_label = bayes.classifyNB(test_file_vec, p_0_vec, p_1_vec, p_spam)
+
+        # print('pred_label: ', pred_label)
+        # print('real_label: ', label_list[test_index])
 
         # Compare with real test file label
         if pred_label != label_list[test_index]:
@@ -125,8 +133,8 @@ def main():
     #     content = f.read().decode('utf-8', errors='ignore')
     #     token_list = text_parse(content)
     #     print(token_list)
-
-    spam_test()
+    for i in range(10):
+        spam_test()
 
 
 if __name__ == '__main__':
