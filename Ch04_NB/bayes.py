@@ -42,7 +42,7 @@ def create_vocab_list(documents):
 # Function to get document vector set of target one according to unique vocabulary list
 def words_2_vec_set(vocab_list, input_doc):
     # Init document vector with zeros
-    result_vec = [0] * len(vocab_list)
+    result_vec = np.zeros(len(vocab_list))
 
     # Scan target document and set vector value to 1 if it exists in unique vocabulary list
     for word in input_doc:
@@ -58,7 +58,7 @@ def words_2_vec_set(vocab_list, input_doc):
 # Function to get document vector bag of target one according to unique vocabulary list
 def words_2_vec_bag(vocab_list, input_doc):
     # Init document vector with zeros
-    result_vec = [0] * len(vocab_list)
+    result_vec = np.zeros(len(vocab_list))
 
     # Scan target document and increase vector value by 1 if it exists in unique vocabulary list
     for word in input_doc:
