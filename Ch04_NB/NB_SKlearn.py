@@ -7,7 +7,7 @@
 from Ch04_NB import bayes
 import re
 from sklearn.model_selection import train_test_split
-from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import BernoulliNB
 from sklearn.metrics import accuracy_score
 
 
@@ -34,7 +34,7 @@ def pre_data():
 
     # Scan directory to save data
     for i in range(1, 26):
-        with open('./data/email/spam/6.txt', 'rb') as f_spam:
+        with open('./data/email/spam/{}.txt'.format(i), 'rb') as f_spam:
             # Read spam email
             content = f_spam.read().decode('utf-8', errors='ignore')
             # Parse file and get words list
@@ -44,7 +44,7 @@ def pre_data():
             # Set label of spam email as 1
             label_list.append(1)
 
-        with open('./data/email/ham/6.txt', 'rb') as f_ham:
+        with open('./data/email/ham/{}.txt'.format(i), 'rb') as f_ham:
             # Read normal email
             content = f_ham.read().decode('utf-8', errors='ignore')
             # Parse file and get words list
@@ -77,7 +77,7 @@ def main():
     print('Sample Number：{}，Train Number：{}，Test Number：{}'.format(len(X), len(X_train), len(X_test)))
 
     # Init model
-    nb_model = GaussianNB()
+    nb_model = BernoulliNB()
 
     # Training
     nb_model.fit(X_train, y_train)

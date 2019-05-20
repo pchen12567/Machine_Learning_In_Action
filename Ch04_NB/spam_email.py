@@ -35,7 +35,7 @@ def spam_test():
 
     # Scan directory to save data
     for i in range(1, 26):
-        with open('./data/email/spam/6.txt', 'rb') as f_spam:
+        with open('./data/email/spam/{}.txt'.format(i), 'rb') as f_spam:
             # Read spam email
             content = f_spam.read().decode('utf-8', errors='ignore')
             # Parse file and get words list
@@ -47,7 +47,7 @@ def spam_test():
             # Set label of spam email as 1
             label_list.append(1)
 
-        with open('./data/email/ham/6.txt', 'rb') as f_ham:
+        with open('./data/email/ham/{}.txt'.format(i), 'rb') as f_ham:
             # Read normal email
             content = f_ham.read().decode('utf-8', errors='ignore')
             # Parse file and get words list
@@ -81,7 +81,7 @@ def spam_test():
         test_file_index.append(rand_index)
 
         # Delete index in training file index list
-        del(training_file_index[rand_index])
+        del (training_file_index[rand_index])
 
     # print(test_file_index)
     # print(len(training_file_index))
@@ -93,14 +93,14 @@ def spam_test():
     # Scan the remaining 40 files
     for train_index in training_file_index:
         # Get train file vector
-        train_file_vec = np.array(bayes.words_2_vec_bag(vocab_list, file_list[train_index]))
+        train_file_vec = np.array(bayes.words_2_vec_set(vocab_list, file_list[train_index]))
         # Save to train vector matrix
         train_matrix.append(train_file_vec)
         # Get train file label
         train_labels.append(label_list[train_index])
 
     # Train data by naive bayes
-    p_0_vec, p_1_vec, p_spam = bayes.trainNB(train_matrix, train_labels)
+    p_0_vec, p_1_vec, p_spam = bayes.trainNB_bernoulli(train_matrix, train_labels)
     # print(p_0_vec)
     # print(p_1_vec)
     # print(p_spam)
@@ -111,7 +111,7 @@ def spam_test():
     # Scan 10 test files
     for test_index in test_file_index:
         # Get test file vector
-        test_file_vec = np.array(bayes.words_2_vec_bag(vocab_list, file_list[test_index]))
+        test_file_vec = np.array(bayes.words_2_vec_set(vocab_list, file_list[test_index]))
 
         # Get test file prediction label
         pred_label = bayes.classifyNB(test_file_vec, p_0_vec, p_1_vec, p_spam)
@@ -124,7 +124,7 @@ def spam_test():
             counter += 1
             print('Classification error', file_list[test_index])
 
-    rate = round(counter/len(test_file_index), 4)
+    rate = round(counter / len(test_file_index), 4)
     print('The error rate is: {}'.format(rate))
 
 
@@ -133,8 +133,7 @@ def main():
     #     content = f.read().decode('utf-8', errors='ignore')
     #     token_list = text_parse(content)
     #     print(token_list)
-    for i in range(10):
-        spam_test()
+    spam_test()
 
 
 if __name__ == '__main__':

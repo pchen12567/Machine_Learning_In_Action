@@ -40,6 +40,7 @@ def create_vocab_list(documents):
 
 
 # Function to get document vector set of target one according to unique vocabulary list
+# Bernoulli method use set of words
 def words_2_vec_set(vocab_list, input_doc):
     # Init document vector with zeros
     result_vec = np.zeros(len(vocab_list))
@@ -56,6 +57,7 @@ def words_2_vec_set(vocab_list, input_doc):
 
 
 # Function to get document vector bag of target one according to unique vocabulary list
+# Multinomial method use bag of words
 def words_2_vec_bag(vocab_list, input_doc):
     # Init document vector with zeros
     result_vec = np.zeros(len(vocab_list))
@@ -69,15 +71,18 @@ def words_2_vec_bag(vocab_list, input_doc):
     return result_vec
 
 
-# Function to train data with label
-def trainNB(train_matrix, category_label):
+# Function to train data with label by Bernoulli method
+def trainNB_bernoulli(train_matrix, category_label):
     # Get number of total document
     total_doc = len(train_matrix)
 
     # Get number of total words in vocabulary
     words_number = len(train_matrix[0])
 
-    # Init numerator vector
+    # Calculate probability of abusive document with Bernoulli
+    p_abusive = sum(category_label) / float(total_doc)
+
+    # Init numerator vector, Laplace smooth method
     p_0_numerator = np.ones(words_number)
     p_1_numerator = np.ones(words_number)
 
@@ -92,17 +97,14 @@ def trainNB(train_matrix, category_label):
             # Vector addition
             p_1_numerator += train_matrix[i]
             # Get total words of label = 1
-            p_1_denominator += sum(train_matrix[i])
+            p_1_denominator += 1
 
         # If label of document is not abusive
         else:
             # Vector addition
             p_0_numerator += train_matrix[i]
             # Get total words of label = 0
-            p_0_denominator += sum(train_matrix[i])
-
-    # Calculate probability of abusive document
-    p_abusive = p_1_denominator / float(p_1_denominator + p_0_denominator)
+            p_0_denominator += 1
 
     # Calculate word vector probability of label = 0
     p_0_vec = np.log(p_0_numerator / p_0_denominator)
@@ -111,6 +113,50 @@ def trainNB(train_matrix, category_label):
     p_1_vec = np.log(p_1_numerator / p_1_denominator)
 
     return p_0_vec, p_1_vec, p_abusive
+
+
+# # Function to train data with label by Multinomial
+# def trainNB(train_matrix, category_label):
+#     # Get number of total document
+#     total_doc = len(train_matrix)
+#
+#     # Get number of total words in vocabulary
+#     words_number = len(train_matrix[0])
+#
+#     # Init numerator vector
+#     p_0_numerator = np.ones(words_number)
+#     p_1_numerator = np.ones(words_number)
+#
+#     # Init denominator
+#     p_0_denominator = 2
+#     p_1_denominator = 2
+#
+#     # Scan all documents
+#     for i in range(total_doc):
+#         # If label of document is abusive
+#         if category_label[i] == 1:
+#             # Vector addition
+#             p_1_numerator += train_matrix[i]
+#             # Get total words of label = 1
+#             p_1_denominator += sum(train_matrix[i])
+#
+#         # If label of document is not abusive
+#         else:
+#             # Vector addition
+#             p_0_numerator += train_matrix[i]
+#             # Get total words of label = 0
+#             p_0_denominator += sum(train_matrix[i])
+#
+#     # Calculate probability of abusive document
+#     p_abusive = p_1_denominator / float(p_1_denominator + p_0_denominator)
+#
+#     # Calculate word vector probability of label = 0
+#     p_0_vec = np.log(p_0_numerator / p_0_denominator)
+#
+#     # Calculate word vector probability of label = 1
+#     p_1_vec = np.log(p_1_numerator / p_1_denominator)
+#
+#     return p_0_vec, p_1_vec, p_abusive
 
 
 # Build classifier
@@ -141,17 +187,17 @@ def main():
     for post in posting_list:
         train_matrix.append(words_2_vec_set(my_vocab_list, post))
 
-    p_0_vec, p_1_vec, p_abusive = trainNB(train_matrix, class_vec)
+    p_0_vec, p_1_vec, p_abusive = trainNB_bernoulli(train_matrix, class_vec)
     # print('p_abusive: ', p_abusive)
     # print('p_0_vec: ', p_0_vec)
     # print('p_1_vec: ', p_1_vec)
 
     input_1 = ['love', 'my', 'dalmation']
-    test_1 = np.array(words_2_vec_bag(my_vocab_list, input_1))
+    test_1 = np.array(words_2_vec_set(my_vocab_list, input_1))
     print('{} vector is: {}'.format(input_1, test_1))
 
     input_2 = ['stupid', 'garbage']
-    test_2 = np.array(words_2_vec_bag(my_vocab_list, input_2))
+    test_2 = np.array(words_2_vec_set(my_vocab_list, input_2))
     print('{} vector is: {}'.format(input_2, test_2))
 
     print('{} classified as: {}'.format(input_1, classifyNB(test_1, p_0_vec, p_1_vec, p_abusive)))
