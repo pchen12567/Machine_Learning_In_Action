@@ -17,4 +17,4 @@
 - [NB_Model: bayes.py](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch04_NB/bayes.py)
 - Instance:
     - [spam_email.py: Classify spam email](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch04_NB/spam_email.py)
-    - [NB_SKlearn.py: Classify with SKlearn GNB](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch04_NB/NB_SKlearn.py)
+    - [NB_SKlearn.py: Classify with SKlearn BernoulliNB](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch04_NB/NB_SKlearn.py)
