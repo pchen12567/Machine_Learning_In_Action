@@ -18,3 +18,9 @@
 - Instance:
     - [spam_email.py: Classify spam email](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch04_NB/spam_email.py)
     - [NB_SKlearn.py: Classify with SKlearn BernoulliNB](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch04_NB/NB_SKlearn.py)
+
+## Chapter 05: LR
+- [LR SGA Model: logistic_SGA.py](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch05_LR/logistic_SGA.py)
+- Instance:
+    - [colic_test.py: Colic Test](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch05_LR/colic_test.py)
+   
