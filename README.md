@@ -21,6 +21,7 @@
 
 ## Chapter 05: LR
 - [LR SGA Model: logistic_SGA.py](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch05_LR/logistic_SGA.py)
+- [Gradient Descent Model: grad_descent.py](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch05_LR/grad_descent.py)
 - Instance:
     - [colic_test.py: Colic Test](https://github.com/pchen12567/Machine_Learning_In_Action/blob/master/Ch05_LR/colic_test.py)
    
