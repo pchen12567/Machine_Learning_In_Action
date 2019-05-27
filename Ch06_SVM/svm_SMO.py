@@ -198,6 +198,17 @@ def smo_P(data_in, labels, C, tolerance, max_iter, k_tup=('lin', 0)):
     return oS.b, oS.alphas
 
 
+# Function to get W
+def cal_W(alphas, data_array, labels):
+    X = np.mat(data_array)
+    label_matrix = np.mat(labels).transpose()
+    m, n = np.shape(X)
+    W = np.zeros((n, 1))
+    for i in range(m):
+        W += np.multiply(alphas[i] * label_matrix[i], X[i, :].T)
+    return W
+
+
 def main():
     file_name = './data/testSet.txt'
     data_matrix, label_matrix = load_data(file_name)
@@ -211,6 +222,11 @@ def main():
     #         print(data_matrix[i], label_matrix[i])
 
     b, alphas = smo_P(data_matrix, label_matrix, 0.6, 0.001, 40)
+    w = cal_W(alphas, data_matrix, label_matrix)
+    # print(w)
+    dataMat = np.mat(data_matrix)
+    print('Prediction: ', dataMat[0] * np.mat(w) + b)
+    print('Real: ', label_matrix[0])
 
 
 if __name__ == '__main__':
