@@ -7,6 +7,7 @@
 
 import random
 import numpy as np
+from Ch06_SVM import support
 
 
 # Function to parse source data
@@ -165,17 +166,51 @@ def smo_simple(data_in, labels, C, tolerance, max_iter):
     return b, alphas
 
 
+def smo_P(data_in, labels, C, tolerance, max_iter, k_tup=('lin', 0)):
+    oS = support.optStruct(np.mat(data_in), np.mat(labels).transpose(), C, tolerance)
+
+    iteration = 0
+
+    entire_set = True
+    alpha_pairs_changed = 0
+
+    while (iteration < max_iter) and (alpha_pairs_changed > 0 or entire_set):
+        alpha_pairs_changed = 0
+        if entire_set:
+            for i in range(oS.m):
+                alpha_pairs_changed += support.inner_L(i, oS)
+                print('fullSet, iteration: {}, i: {}, pairs changed: {}.'.format(iteration, i, alpha_pairs_changed))
+            iteration += 1
+
+        else:
+            non_bound_is = np.nonzero((oS.alphas.A > 0) * (oS.alphas.A < C))[0]
+
+            for i in non_bound_is:
+                alpha_pairs_changed += support.inner_L(i, oS)
+                print('non-bound, iteration: {}, i: {}, pairs changed: {}.'.format(iteration, i, alpha_pairs_changed))
+            iteration += 1
+        if entire_set:
+            entire_set = False
+        elif alpha_pairs_changed == 0:
+            entire_set = True
+        print('iteration number: {}'.format(iteration))
+
+    return oS.b, oS.alphas
+
+
 def main():
     file_name = './data/testSet.txt'
     data_matrix, label_matrix = load_data(file_name)
     # print(label_matrix)
-    b, alphas = smo_simple(data_matrix, label_matrix, 0.6, 0.001, 40)
-    print(b)
-    print(alphas[alphas > 0])
-    print(np.shape(alphas[alphas > 0]))
-    for i in range(100):
-        if alphas[i] > 0:
-            print(data_matrix[i], label_matrix[i])
+    # b, alphas = smo_simple(data_matrix, label_matrix, 0.6, 0.001, 40)
+    # print(b)
+    # print(alphas[alphas > 0])
+    # print(np.shape(alphas[alphas > 0]))
+    # for i in range(100):
+    #     if alphas[i] > 0:
+    #         print(data_matrix[i], label_matrix[i])
+
+    b, alphas = smo_P(data_matrix, label_matrix, 0.6, 0.001, 40)
 
 
 if __name__ == '__main__':
